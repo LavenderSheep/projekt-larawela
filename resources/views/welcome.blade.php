@@ -106,7 +106,7 @@
                 font-family: 'Nunito', sans-serif;
             }
             div.square{
-                background-color: #FFFFFF;
+                /* background-color: #ffffff; */
                 border-style: solid;
                 border-inline: 1px solid black;
                 border-bottom: 1px solid black;
@@ -119,6 +119,21 @@
                 grid-template-columns: 50% 50%;
                 border: 2px solid black;
                 
+            }
+            form{
+                width:100%;
+                height: 100%;
+            }
+            button{
+                width: 100%;
+                height: 100%;
+                opacity: 0;
+            }
+            input {
+                width: 0%;
+                height: 0%;
+                opacity: 0;
+                pointer-events: none;
             }
         </style>
         <meta charset="UTF-8">
@@ -263,7 +278,7 @@ window.addEventListener('DOMContentLoaded', () => {
                         <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Dashboard</a>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                        <a href="{{ url('/dashboard') }}" onclick="event.preventDefault(); this.closest('form').submit();" 
+                        <a href="{{ url('/') }}" onclick="event.preventDefault(); this.closest('form').submit();" 
                         class="text-sm text-gray-700 dark:text-gray-500 underline">Log Out</a>
                     @else
                         <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>
@@ -277,13 +292,51 @@ window.addEventListener('DOMContentLoaded', () => {
 
             <div class="image-edit">
                 <?php 
+                    $currentID = 1;
+                    use App\Models\ColorSquare;
+
+                    function getColor(int $value){
+                        switch($value){
+                            case 0:
+                                return "white";
+                                break;
+                            case 1:
+                                return "blue";
+                                break;
+                            default:
+                                return "green";
+                                break;
+                        }
+                    }
+
                     for($i=1; $i<3; $i++){
                         for($j=1; $j<3; $j++){
+                            $square = ColorSquare::find($currentID);
+                            $kolor = getColor($square->color);
+                            $temp_col = 0;
+                            switch ($square->color) {
+                                case '0':
+                                    $temp_col = 1;
+                                    break;
+                                
+                                default:
+                                    $temp_col = 0;
+                                    break;
+                            }
                             ?>
-                            <div  class="square <?php echo $i ?><?php echo $j ?>">
-                                <a href={{}}> </a>
+                            <div class="square <?php echo $i ?><?php echo $j ?>" style="background-color:{{$kolor}}">
+                                <form method="POST" action="{{action('App\Http\Controllers\ColorSquareController@update', [$currentID])}}" class="submitcolor">
+                                    @csrf
+                                    <!-- {{ csrf_token() }} -->
+                                    {{method_field('PUT')}}
+                                    <input type="number" class="submitcolor" name="column" value={{$i}} />
+                                    <input type="number" class="submitcolor" name="row" value={{$j}} />
+                                    <input type="number" class="submitcolor" name="color" value="{{$temp_col}}"/>
+                                    <button onclick="this.closest('form').submit();"></button>
+                                </form>
                             </div>
                             <?php
+                            $currentID++;
                         }
                     }
                 ?>
