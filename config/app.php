@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Projekt Wzorce Internetowe Maciej Sawicki Bartosz Gryszpiński'),
 
     /*
     |--------------------------------------------------------------------------
