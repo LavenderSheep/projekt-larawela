@@ -4,96 +4,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
-
         <!-- Fonts -->
-        {{--<link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">--}}
-{{--<style>
-            * {
-    padding: 0;
-    margin: 0;
-    font-family: 'Itim', cursive;
-}
-
-.background {
-    background-color: #12181B;
-    height: 100vh;
-    padding-top: 1px;
-}
-
-.title {
-    color: white;
-    text-align: center;
-    font-size: 40px;
-    margin-top: 10%;
-}
-
-.display {
-    color: white;
-    font-size: 25px;
-    text-align: center;
-    margin-top: 1em;
-    margin-bottom: 1em;
-}
-
-.hide {
-    display: none;
-}
-
-.container {
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 33% 33% 33%;
-    grid-template-rows: 33% 33% 33%;
-    max-width: 300px;
-
-}
-
-.tile {
-    border: 1px solid white;
-    min-width: 100px;
-    min-height: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 50px;
-    cursor: pointer;
-}
-
-.playerX {
-    color: #09C372;
-}
-
-.playerO {
-    color: #498AFB;
-}
-
-.controls {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    margin-top: 1em;
-}
-
-.controls button {
-    color: white;
-    padding: 8px;
-    border-radius: 8px;
-    border: none;
-    font-size: 20px;
-    margin-left: 1em;
-    cursor: pointer;
-}
-
-.restart {
-    background-color: #498AFB;
-}
-
-#reset {
-    background-color: #FF3860;
-}
-            </style> --}}
+        <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
         
         <!-- Styles -->
         <style>
@@ -106,17 +18,17 @@
                 font-family: 'Nunito', sans-serif;
             }
             div.square{
-                /* background-color: #ffffff; */
                 border-style: solid;
                 border-inline: 1px solid black;
                 border-bottom: 1px solid black;
                 border-top: 1px solid black;
             }
             div.image-edit{
-                width:200px;
-                height:200px;
+                width:400px;
+                height:400px;
                 display: grid;
-                grid-template-columns: 50% 50%;
+                grid-template-columns: 10% 10% 10% 10% 10% 10% 10% 10% 10% 10%;
+                grid-template-rows: 10% 10% 10% 10% 10% 10% 10% 10% 10% 10%;
                 border: 2px solid black;
                 
             }
@@ -140,134 +52,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
-   {{-- <script>
 
-window.addEventListener('DOMContentLoaded', () => {
-    const tiles = Array.from(document.querySelectorAll('.tile'));
-    const playerDisplay = document.querySelector('.display-player');
-    const resetButton = document.querySelector('#reset');
-    const announcer = document.querySelector('.announcer');
-
-    let board = ['', '', '', '', '', '', '', '', ''];
-    let currentPlayer = 'X';
-    let isGameActive = true;
-
-    const PLAYERX_WON = 'PLAYERX_WON';
-    const PLAYERO_WON = 'PLAYERO_WON';
-    const TIE = 'TIE';
-
-
-    /*
-        Indexes within the board
-        [0] [1] [2]
-        [3] [4] [5]
-        [6] [7] [8]
-    */
-
-    const winningConditions = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-        [0, 4, 8],
-        [2, 4, 6]
-    ];
-
-    function handleResultValidation() {
-        let roundWon = false;
-        for (let i = 0; i <= 7; i++) {
-            const winCondition = winningConditions[i];
-            const a = board[winCondition[0]];
-            const b = board[winCondition[1]];
-            const c = board[winCondition[2]];
-            if (a === '' || b === '' || c === '') {
-                continue;
-            }
-            if (a === b && b === c) {
-                roundWon = true;
-                break;
-            }
-        }
-
-    if (roundWon) {
-            announce(currentPlayer === 'X' ? PLAYERX_WON : PLAYERO_WON);
-            isGameActive = false;
-            return;
-        }
-
-    if (!board.includes(''))
-        announce(TIE);
-    }
-
-    const announce = (type) => {
-        switch(type){
-            case PLAYERO_WON:
-                announcer.innerHTML = 'Player <span class="playerO">O</span> Won';
-                break;
-            case PLAYERX_WON:
-                announcer.innerHTML = 'Player <span class="playerX">X</span> Won';
-                break;
-            case TIE:
-                announcer.innerText = 'Tie';
-        }
-        announcer.classList.remove('hide');
-    };
-
-    const isValidAction = (tile) => {
-        if (tile.innerText === 'X' || tile.innerText === 'O'){
-            return false;
-        }
-
-        return true;
-    };
-
-    const updateBoard =  (index) => {
-        board[index] = currentPlayer;
-    }
-
-    const changePlayer = () => {
-        playerDisplay.classList.remove(`player${currentPlayer}`);
-        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-        playerDisplay.innerText = currentPlayer;
-        playerDisplay.classList.add(`player${currentPlayer}`);
-    }
-
-    const userAction = (tile, index) => {
-        if(isValidAction(tile) && isGameActive) {
-            tile.innerText = currentPlayer;
-            tile.classList.add(`player${currentPlayer}`);
-            updateBoard(index);
-            handleResultValidation();
-            changePlayer();
-        }
-    }
-    
-    const resetBoard = () => {
-        board = ['', '', '', '', '', '', '', '', ''];
-        isGameActive = true;
-        announcer.classList.add('hide');
-
-        if (currentPlayer === 'O') {
-            changePlayer();
-        }
-
-        tiles.forEach(tile => {
-            tile.innerText = '';
-            tile.classList.remove('playerX');
-            tile.classList.remove('playerO');
-        });
-    }
-
-    tiles.forEach( (tile, index) => {
-        tile.addEventListener('click', () => userAction(tile, index));
-    });
-
-    resetButton.addEventListener('click', resetBoard);
-});
-    </script> --}}
-    <title>Tic-Tac-Toe</title>
     </head>
     <body class="antialiased">
         <nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
@@ -276,10 +61,11 @@ window.addEventListener('DOMContentLoaded', () => {
                 <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
                     @auth
                         <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Dashboard</a>
-                        <form method="POST" action="{{ route('logout') }}">
+                        <form method="POST" action="{{ route('logout') }}" class="logout">
                             @csrf
                         <a href="{{ url('/') }}" onclick="event.preventDefault(); this.closest('form').submit();" 
                         class="text-sm text-gray-700 dark:text-gray-500 underline">Log Out</a>
+                        </form>
                     @else
                         <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>
 
@@ -294,6 +80,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 <?php 
                     $currentID = 1;
                     use App\Models\ColorSquare;
+                    $squares = ColorSquare::all();
 
                     function getColor(int $value){
                         switch($value){
@@ -309,13 +96,12 @@ window.addEventListener('DOMContentLoaded', () => {
                         }
                     }
 
-                    for($i=1; $i<3; $i++){
-                        for($j=1; $j<3; $j++){
-                            $square = ColorSquare::find($currentID);
-                            $kolor = getColor($square->color);
+                    for($i=1; $i<11; $i++){
+                        for($j=1; $j<11; $j++){
+                            $kolor = getColor($squares[$currentID-1]->color);
                             $temp_col = 0;
-                            switch ($square->color) {
-                                case '0':
+                            switch ($kolor) {
+                                case "white":
                                     $temp_col = 1;
                                     break;
                                 
@@ -325,6 +111,7 @@ window.addEventListener('DOMContentLoaded', () => {
                             }
                             ?>
                             <div class="square <?php echo $i ?><?php echo $j ?>" style="background-color:{{$kolor}}">
+                                @auth
                                 <form method="POST" action="{{action('App\Http\Controllers\ColorSquareController@update', [$currentID])}}" class="submitcolor">
                                     @csrf
                                     <!-- {{ csrf_token() }} -->
@@ -334,6 +121,7 @@ window.addEventListener('DOMContentLoaded', () => {
                                     <input type="number" class="submitcolor" name="color" value="{{$temp_col}}"/>
                                     <button onclick="this.closest('form').submit();"></button>
                                 </form>
+                               @endauth
                             </div>
                             <?php
                             $currentID++;
