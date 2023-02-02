@@ -31,4 +31,6 @@ Route::middleware('auth')->group(function () {
 
 Route::resource('colorsquare', ColorSquareController::class);
 
+Route::get('colorsquare/{id}', 'App\Http\Controllers\ColorSquareController@update');
+
 require __DIR__.'/auth.php';

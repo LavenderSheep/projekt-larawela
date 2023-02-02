@@ -42,8 +42,8 @@
                 opacity: 0;
             }
             input {
-                width: 0%;
-                height: 0%;
+                width: 0px;
+                height: 0px;
                 opacity: 0;
                 pointer-events: none;
             }
@@ -52,7 +52,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
-
+    <script src="{{ asset('js/updateSquares.js') }}" defer></script>
     </head>
     <body class="antialiased">
         <nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
@@ -116,9 +116,9 @@
                                     @csrf
                                     <!-- {{ csrf_token() }} -->
                                     {{method_field('PUT')}}
-                                    <input type="number" class="submitcolor" name="column" value={{$i}} />
-                                    <input type="number" class="submitcolor" name="row" value={{$j}} />
-                                    <input type="number" class="submitcolor" name="color" value="{{$temp_col}}"/>
+                                    <input type="hidden" class="submitcolor" name="column" value={{$i}} />
+                                    <input type="hidden" class="submitcolor" name="row" value={{$j}} />
+                                    <input type="hidden" class="submitcolor" name="color" value="{{$temp_col}}"/>
                                     <button onclick="this.closest('form').submit();"></button>
                                 </form>
                                @endauth
@@ -129,34 +129,6 @@
                     }
                 ?>
             </div>
-              {{--<main class="background">
-                    <section class="title">
-                        <h1>Tic Tac Toe</h1>
-                    </section>
-                    <section class="display">
-                        Player <span class="display-player playerX">X</span>'s turn
-                    </section>
-                    <section class="container">
-                        <div class="tile"></div>
-                        <div class="tile"></div>
-                        <div class="tile"></div>
-                        <div class="tile"></div>
-                        <div class="tile"></div>
-                        <div class="tile"></div>
-                        <div class="tile"></div>
-                        <div class="tile"></div>
-                        <div class="tile"></div>
-                    </section>
-                    <section class="display announcer hide"></section>
-                    <section class="controls">
-                        <button id="reset">Reset</button>
-                    </section>
-
-                    <div class="">
-                        <a href={{}}
-                    </div>
-                </main>--}}
-                    
                 </div>
             </div>
         </div>

@@ -53,6 +53,8 @@ class ColorSquareController extends Controller
     public function show($id)
     {
         //
+        $square = ColorSquare::find($id);
+        return $square;
     }
 
     /**
